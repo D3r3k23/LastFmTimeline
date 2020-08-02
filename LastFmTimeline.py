@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 
 LastFmGet = LastFmApi(
-    key       = "REDACTED",
+    key       = "REDACTED", # My key
     userAgent = "D3r3k523")
 
 
