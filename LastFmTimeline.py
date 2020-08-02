@@ -10,9 +10,13 @@ LastFmGet = LastFmApi(
 
 
 username = get_username(LastFmGet)
-mode     = get_mode()
-sort     = get_sort()
+print()
+mode = get_mode()
+print()
+sort = get_sort()
+print()
 numItems = get_num_items(mode)
+print()
 
 charts = get_target_charts(LastFmGet, username)
 items  = get_items(LastFmGet, username, mode, numItems)
