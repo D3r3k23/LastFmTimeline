@@ -6,8 +6,8 @@ from matplotlib  import pyplot
 
 
 LastFmGet = LastFmApi(
-    key       = "REDACTED", # My key
-    userAgent = "D3r3k523")
+    key       = "API KEY",
+    userAgent = "LastFmTimeline by D3r3k523")
 
 username = get_username(LastFmGet)
 mode     = get_mode() # "Artist", "Album", "Track"
