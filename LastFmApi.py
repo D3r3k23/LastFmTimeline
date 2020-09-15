@@ -4,18 +4,18 @@ import requests, requests_cache
 
 requests_cache.install_cache()
 
-API_URL       = 'http://ws.audioscrobbler.com/2.0/'
-API_CALL_RATE = 5 # calls per second
-API_CALL_INT  = 1 / API_CALL_RATE
-
+API_URL   = 'http://ws.audioscrobbler.com/2.0/'
+CALL_RATE = 5 # calls per second
+CALL_INT  = 1 / CALL_RATE # interval
 
 # Interface class for requesting data from the last.fm API
 class LastFmApi:
     # Initializes request data
     def __init__(self, key, userAgent, format='json'):
-        self.key     = key
-        self.headers = { 'user_agent': userAgent }
-        self.format  = format
+        self.key         = key
+        self.headers     = { 'user_agent': userAgent }
+        self.format      = format
+        self.lastApiCall = None
 
     # Appends API key and format to the payload and returns the formatted API Response
     def get_response(self, payload):
@@ -23,13 +23,13 @@ class LastFmApi:
         payload['format']  = self.format
 
         self.rate_limiter()
-        response = requests.get(API_URL, headers = self.headers, params = payload)
+        response = requests.get(API_URL, headers=self.headers, params=payload)
 
         if response.status_code != requests.codes.ok:
             print(response.text)
             return 0
 
-        if not hasattr(self, 'lastApiCall') or 'from_cache' not in response:
+        if self.lastApiCall is None or 'from_cache' not in response:
             self.lastApiCall = time() # Updates time of last API call
 
         if self.format == 'json':
@@ -39,11 +39,10 @@ class LastFmApi:
 
     # Waits until the required interval between API calls is reached
     def rate_limiter(self):
-        if hasattr(self, 'lastApiCall'):
+        if self.lastApiCall is not None:
             timeSince = time() - self.lastApiCall
-            if timeSince < API_CALL_INT:
-                sleep(API_CALL_INT - timeSince)
-
+            if timeSince < CALL_INT:
+                sleep(CALL_INT - timeSince)
 
     # API Method Wrappers
 
