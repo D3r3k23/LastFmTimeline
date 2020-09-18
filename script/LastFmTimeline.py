@@ -4,7 +4,7 @@ from functions   import *
 from collections import OrderedDict
 from matplotlib  import pyplot, dates, rc
 
-LastFmGet = LastFmApi(key='13b760489bb27cd06eada7872c9b394a', userAgent='LastFmTimeline by D3r3k523')
+LastFmGet = LastFmApi(key='MY_KEY', userAgent='LastFmTimeline by D3r3k523')
 
 username = get_username(LastFmGet)
 mode     = get_mode() # 'Artist', 'Album', 'Track'
