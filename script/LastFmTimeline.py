@@ -64,10 +64,4 @@ pyplot.legend(bbox_to_anchor = (1.01, 1.01),
               loc            = 'upper left',
               prop           = { 'size': 6 })
 
-pyplot.tight_layout()
-
-def on_plot_hover(event):
-    pass
-
 pyplot.show()
-pyplot.gcf().savefig("timeline.png")
