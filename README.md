@@ -1,4 +1,4 @@
-# Last.fm Timeline
+# LastFmTimeline
 
 ### By Derek Henderson
 
