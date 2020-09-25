@@ -1,4 +1,7 @@
 # Last.fm Timeline
+
+### By Derek Henderson
+
 This program analyzes a user's [Last.fm](https://www.last.fm/) profile and displays a graph showing how the user's music taste has changed over time.
 
 ### Example output plot
