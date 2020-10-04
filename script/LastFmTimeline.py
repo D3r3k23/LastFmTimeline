@@ -4,7 +4,7 @@ from functions   import *
 from collections import OrderedDict
 from matplotlib  import pyplot, dates, rc
 
-LastFmGet = LastFmApi(key='MY_PRIVATE_KEY', userAgent='LastFmTimeline by D3r3k523')
+LastFmGet = LastFmApi(key='13b760489bb27cd06eada7872c9b394a', userAgent='LastFmTimeline by D3r3k523')
 
 username = get_username(LastFmGet)
 mode     = get_mode() # 'Artist', 'Album', 'Track'
@@ -64,4 +64,10 @@ pyplot.legend(bbox_to_anchor = (1.01, 1.01),
               loc            = 'upper left',
               prop           = { 'size': 6 })
 
+pyplot.tight_layout()
+
+def on_plot_hover(event):
+    pass
+
 pyplot.show()
+pyplot.gcf().savefig("timeline.png")
