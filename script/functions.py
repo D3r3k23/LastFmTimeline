@@ -2,10 +2,9 @@
 from Week        import Week
 from collections import OrderedDict, namedtuple
 
-#
 def get_username(LastFmGet):
     while True:
-        username = input("Enter username: ")
+        username = input("Enter Last.fm username: ")
         print()
         if 'error' not in LastFmGet.user_info(username):
             return username
