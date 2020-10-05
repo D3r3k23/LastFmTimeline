@@ -68,7 +68,7 @@ def get_items(LastFmGet, username, mode, numItems):
         header1 = 'toptracks'
         header2 = 'track'
     else:
-        return 0
+        return None
 
     itemData = dataMethod(username, numItems)
     items = [ item['name'] for item in itemData[header1][header2] ]
@@ -102,7 +102,7 @@ def init_data(items, charts, data):
 def load_data(LastFmGet, username, mode, sort, charts, data):
     data = get_scrobble_data(LastFmGet, username, mode, charts, data)
     if sort == 'rank':
-        data = get_rank_data(charts, data) # ?
+        data = create_rank_data(charts, data)
 
 # Gets the user's scrobble data for each chart
 def get_scrobble_data(LastFmGet, username, mode, charts, data):
@@ -119,14 +119,13 @@ def get_scrobble_data(LastFmGet, username, mode, charts, data):
         header1 = 'weeklytrackchart'
         header2 = 'track'
     else:
-        return 0
+        return None
 
     for index, chart in enumerate(charts):
-        if index != 0:
+        if index > 0:
             prevChart = charts[index - 1]
             for itemData in data.values(): # Copy each item's value from the previous chart into the current chart
                 itemData[chart] = itemData[prevChart]
-            print("{:>2}%...".format(index / len(charts) * 100), end='')
 
         chartData = dataMethod(username, chart.start, chart.end)
         for item in chartData[header1][header2]: # Iterate over items in the user's data for the current chart
@@ -137,7 +136,7 @@ def get_scrobble_data(LastFmGet, username, mode, charts, data):
     return data
 
 # Uses the scrobble data in data to create an ranked list for every chart, and puts the rank data back into data
-def get_rank_data(charts, data):
+def create_rank_data(charts, data):
     RankItem = namedtuple('RankItem', ['scrobbles', 'name'])
 
     for chart in charts:
