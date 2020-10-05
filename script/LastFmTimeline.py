@@ -12,14 +12,13 @@ sort     = get_sort() # 'Scrobbles', 'Rank'
 numItems = get_num_items(mode)
 
 print("Loading...")
-print("0%...")
 items  = get_items(LastFmGet, username, mode, numItems) # List of strings
 charts = get_target_charts(LastFmGet, username)         # List of Weeks
 
 data = OrderedDict()
 init_data(items, charts, data)
 load_data(LastFmGet, username, mode, sort, charts, data)
-print("100%")
+print("Done")
 # data = {
 #   item1: {
 #     chart1: entry,

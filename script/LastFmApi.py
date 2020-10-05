@@ -27,9 +27,9 @@ class LastFmApi:
 
         if response.status_code != requests.codes.ok:
             print(response.text)
-            return 0
+            return None
 
-        if self.lastApiCall is None or 'from_cache' not in response:
+        if 'from_cache' not in response:
             self.lastApiCall = time() # Updates time of last API call
 
         if self.format == 'json':
@@ -39,7 +39,7 @@ class LastFmApi:
 
     # Waits until the required interval between API calls is reached
     def rate_limiter(self):
-        if self.lastApiCall is not None:
+        if self.lastApiCall is not None: # If there was a previous call to the API
             timeSince = time() - self.lastApiCall
             if timeSince < CALL_INT:
                 sleep(CALL_INT - timeSince)
