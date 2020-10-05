@@ -4,7 +4,7 @@ from functions   import *
 from collections import OrderedDict
 from matplotlib  import pyplot, dates, rc
 
-LastFmGet = LastFmApi(key='13b760489bb27cd06eada7872c9b394a', userAgent='LastFmTimeline by D3r3k523')
+LastFmGet = LastFmApi(key='MY_PRIVATE_KEY', userAgent='LastFmTimeline by D3r3k523')
 
 username = get_username(LastFmGet)
 mode     = get_mode() # 'Artist', 'Album', 'Track'
@@ -12,14 +12,13 @@ sort     = get_sort() # 'Scrobbles', 'Rank'
 numItems = get_num_items(mode)
 
 print("Loading...")
-print("0%...")
 items  = get_items(LastFmGet, username, mode, numItems) # List of strings
 charts = get_target_charts(LastFmGet, username)         # List of Weeks
 
 data = OrderedDict()
 init_data(items, charts, data)
 load_data(LastFmGet, username, mode, sort, charts, data)
-print("100%")
+print("Done")
 # data = {
 #   item1: {
 #     chart1: entry,
