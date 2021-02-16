@@ -2,7 +2,7 @@
 from LastFmApi import *
 from Week      import Week
 
-LastFmGet = LastFmApi(key='KEY', userAgent='LastFmTimeline by D3r3k523')
+LastFmGet = LastFmApi(key='Key', userAgent='Testing')
 
 
 r = LastFmGet.user_weekly_chart_list('D3r3k523')
