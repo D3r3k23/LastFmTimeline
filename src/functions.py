@@ -1,6 +1,30 @@
 
 from Week        import Week
 from collections import OrderedDict, namedtuple
+from math        import ceil
+from enum        import Enum
+
+class Mode(Enum):
+    ARTIST = 1
+    ALBUM  = 2
+    TRACK  = 3
+    def __str__(self):
+        if self is Mode.ARTIST:
+            return 'Artist'
+        if self is Mode.ALBUM:
+            return 'Album'
+        if self is Mode.TRACK:
+            return 'Track'
+
+class Sort(Enum):
+    SCROBBLES = 1
+    RANK      = 2
+    def __str__(self):
+        if self is Sort.SCROBBLES:
+            return 'Scrobbles'
+        if self is Mode.RANK:
+            return 'Rank'
+
 
 def get_username(LastFmGet):
     while True:
@@ -21,11 +45,11 @@ def get_mode():
             continue
 
         if answer == 1:
-            return 'Artist'
+            return Mode.ARTIST
         if answer == 2:
-            return 'Album'
+            return Mode.ALBUM
         if answer == 3:
-            return 'Track'
+            return Mode.TRACK
 
 def get_sort():
     print("[1] Scrobbles")
@@ -38,41 +62,46 @@ def get_sort():
             continue
 
         if answer == 1:
-            return 'Scrobbles'
+            return Sort.SCROBBLES
         if answer == 2:
-            return 'Rank'
+            return Sort.RANK
 
 def get_num_items(mode):
     while True:
         try:
-            numItems = int(input("Enter the number of " + mode + "s to include (0-100): "))
+            numItems = int(input("Enter the number of " + str(mode) + "s to include (0-100): "))
             print()
         except ValueError:
             continue
 
-        if 0 < numItems <= 100:
+        if 1 <= numItems <= 100:
             return numItems
 
 # Returns a list of items from the user's profile
 def get_items(LastFmGet, username, mode, numItems):
-    if mode == 'Artist':
+    dataMethod, key1, key2 = get_user_top_items_args(LastFmGet, mode)
+
+    itemData = dataMethod(username, numItems)
+    items = [ item['name'] for item in itemData[key1][key2] ]
+    return items
+
+def get_user_top_items_args(LastFmGet, mode):
+    if mode is Mode.ARTIST:
         dataMethod = LastFmGet.user_top_artists
-        header1 = 'topartists'
-        header2 = 'artist'
-    elif mode == 'Album':
+        key1 = 'topartists'
+        key2 = 'artist'
+    elif mode is Mode.ALBUM:
         dataMethod = LastFmGet.user_top_albums
-        header1 = 'topalbums'
-        header2 = 'album'
-    elif mode == 'Track':
+        key1 = 'topalbums'
+        key2 = 'album'
+    elif mode is Mode.TRACK:
         dataMethod = LastFmGet.user_top_tracks
-        header1 = 'toptracks'
-        header2 = 'track'
+        key1 = 'toptracks'
+        key2 = 'track'
     else:
         return None
 
-    itemData = dataMethod(username, numItems)
-    items = [ item['name'] for item in itemData[header1][header2] ]
-    return items
+    return dataMethod, key1, key2
 
 # Returns list of charts available in the user's history
 def get_target_charts(LastFmGet, username):
@@ -101,39 +130,44 @@ def init_data(items, charts, data):
 # Loads the user's scrobble data into data, and if sort is rank then converts data into rank data
 def load_data(LastFmGet, username, mode, sort, charts, data):
     data = get_scrobble_data(LastFmGet, username, mode, charts, data)
-    if sort == 'rank':
-        data = create_rank_data(charts, data)
+    if sort is Sort.RANK:
+        data = create_rank_data(charts, data) # data is not used?
 
 # Gets the user's scrobble data for each chart
 def get_scrobble_data(LastFmGet, username, mode, charts, data):
-    if mode == 'Artist':
-        dataMethod = LastFmGet.user_weekly_artists_chart
-        header1 = 'weeklyartistchart'
-        header2 = 'artist'
-    elif mode == 'Album':
-        dataMethod = LastFmGet.user_weekly_albums_chart
-        header1 = 'weeklyalbumchart'
-        header2 = 'album'
-    elif mode == 'Track':
-        dataMethod = LastFmGet.user_weekly_tracks_chart
-        header1 = 'weeklytrackchart'
-        header2 = 'track'
-    else:
-        return None
+    dataMethod, key1, key2 = get_user_weekly_items_chart_args(LastFmGet, mode)
 
-    for index, chart in enumerate(charts):
-        if index > 0:
-            prevChart = charts[index - 1]
+    for i, chart in enumerate(charts):
+        if i > 0:
+            prevChart = charts[i - 1]
             for itemData in data.values(): # Copy each item's value from the previous chart into the current chart
                 itemData[chart] = itemData[prevChart]
 
         chartData = dataMethod(username, chart.start, chart.end)
-        for item in chartData[header1][header2]: # Iterate over items in the user's data for the current chart
+        for item in chartData[key1][key2]: # Iterate over items in the user's data for the current chart
             itemName = item['name']
             if itemName in data:
                 data[itemName][chart] += int(item['playcount']) # Add the current chart's scrobbles to the item's previous total
 
     return data
+
+def get_user_weekly_items_chart_args(LastFmGet, mode):
+    if mode is Mode.ARTIST:
+        dataMethod = LastFmGet.user_weekly_artists_chart
+        key1 = 'weeklyartistchart'
+        key2 = 'artist'
+    elif mode is Mode.ALBUM:
+        dataMethod = LastFmGet.user_weekly_albums_chart
+        key1 = 'weeklyalbumchart'
+        key2 = 'album'
+    elif mode is Mode.TRACK:
+        dataMethod = LastFmGet.user_weekly_tracks_chart
+        key1 = 'weeklytrackchart'
+        key2 = 'track'
+    else:
+        return None
+
+    return dataMethod, key1, key2
 
 # Uses the scrobble data in data to create an ranked list for every chart, and puts the rank data back into data
 def create_rank_data(charts, data):
@@ -147,6 +181,10 @@ def create_rank_data(charts, data):
             data[item.name][chart] = rank
 
     return data
+
+
+def round_up(x, place):
+    return int(ceil(x / place)) * place
 
 def print_data(data):
     for itemName, itemData in data.items():

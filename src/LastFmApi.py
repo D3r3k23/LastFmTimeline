@@ -48,68 +48,68 @@ class LastFmApi:
 
     def user_info(self, user):
         payload = { "method": "user.getInfo",
-                    "user"  : user }
-
+                    "user"  : user
+        }
         return self.get_response(payload)
 
     def user_recent_tracks(self, user, limit=50, page=1):
         payload = { "method": "user.getRecentTracks",
                     "user"  : user,
                     "limit" : limit,
-                    "page"  : page }
-
+                    "page"  : page
+        }
         return self.get_response(payload)
 
     def user_top_artists(self, user, limit=50, page=1):
         payload = { "method": "user.getTopArtists",
                     "user"  : user,
                     "limit" : limit,
-                    "page"  : page }
-
+                    "page"  : page
+        }
         return self.get_response(payload)
 
     def user_top_albums(self, user, limit=50, page=1):
         payload = { "method": "user.getTopAlbums",
                     "user"  : user,
                     "limit" : limit,
-                    "page"  : page }
-
+                    "page"  : page
+        }
         return self.get_response(payload)
 
     def user_top_tracks(self, user, limit=50, page=1):
         payload = { "method": "user.getTopTracks",
                     "user"  : user,
                     "limit" : limit,
-                    "page"  : page }
-
+                    "page"  : page
+        }
         return self.get_response(payload)
 
     def user_weekly_chart_list(self, user):
         payload = { "method": "user.getWeeklyChartList",
-                    "user"  : user }
-
+                    "user"  : user
+        }
         return self.get_response(payload)
 
     def user_weekly_artists_chart(self, user, start=0, end=0):
         payload = { "method": "user.getWeeklyArtistChart",
                     "user"  : user,
                     "from"  : start,
-                    "to"    : end }
-
+                    "to"    : end
+        }
         return self.get_response(payload)
 
     def user_weekly_albums_chart(self, user, start=-1, end=-1):
         payload = { "method": "user.getWeeklyAlbumChart",
                     "user"  : user,
                     "from"  : start,
-                    "to"    : end }
-
+                    "to"    : end
+        }
         return self.get_response(payload)
 
     def user_weekly_tracks_chart(self, user, start=-1, end=-1):
         payload = { "method": "user.getWeeklyTrackChart",
                     "user"  : user,
                     "from"  : start,
-                    "to"    : end }
-
+                    "to"    : end
+        }
         return self.get_response(payload)
