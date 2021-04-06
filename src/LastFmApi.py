@@ -1,8 +1,18 @@
 
 from time import time, sleep
-import requests, requests_cache
+import requests
 
-requests_cache.install_cache()
+USE_CACHE = False
+
+if USE_CACHE:
+    import requests_cache
+    requests_cache.install_cache()
+
+import ApiSecrets
+#
+# Inside ApiSecrets.py: Define KEY string
+#
+API_KEY = ApiSecrets.KEY
 
 API_URL   = 'http://ws.audioscrobbler.com/2.0/'
 CALL_RATE = 5 # calls per second
@@ -11,8 +21,8 @@ CALL_INT  = 1 / CALL_RATE # interval
 # Interface class for requesting data from the last.fm API
 class LastFmApi:
     # Initializes request data
-    def __init__(self, key, userAgent, format='json'):
-        self.key         = key
+    def __init__(self, userAgent, format='json'):
+        self.key         = API_KEY
         self.headers     = { 'user_agent': userAgent }
         self.format      = format
         self.lastApiCall = None
@@ -29,7 +39,7 @@ class LastFmApi:
             print(response.text)
             return None
 
-        if 'from_cache' not in response:
+        if USE_CACHE and 'from_cache' not in response:
             self.lastApiCall = time() # Updates time of last API call
 
         if self.format == 'json':

@@ -6,7 +6,7 @@ from Week        import *
 from collections import OrderedDict
 from matplotlib  import pyplot, dates
 
-LastFmGet = LastFmApi(key='13b760489bb27cd06eada7872c9b394a', userAgent='LastFmTimeline by D3r3k523')
+LastFmGet = LastFmApi('LastFmTimeline by D3r3k523')
 
 
 # Get data configuration
