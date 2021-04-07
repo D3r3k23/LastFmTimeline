@@ -6,9 +6,12 @@ class Week:
     def __init__(self, start, end):
         self.start = start
         self.end   = end
+    
+    def date(self):
+        return datetime.fromtimestamp(self.end)
 
     def __str__(self):
-        return datetime.fromtimestamp(self.end).strftime("%m/%d/%y")
+        return datetime.fromtimestamp(self.end).strftime('%m/%d/%y')
 
     def __eq__(self, other):
         return isinstance(other, type(self)) and (self.start, self.end) == (other.start, other.end)

@@ -1,7 +1,7 @@
 
-from LastFmApi   import *
-from functions   import *
-from Week        import *
+from LastFmApi import LastFmApi
+from Week import Week
+from Util import *
 
 from collections import OrderedDict
 from matplotlib  import pyplot, dates
@@ -17,17 +17,17 @@ numItems = get_num_items(mode)
 
 
 # Build the dataset
-print("Loading")
-print("...")
+print('Loading')
+print('...')
 items  = get_items(LastFmGet, username, mode, numItems) # List of strings
-print("...")
+print('...')
 charts = get_target_charts(LastFmGet, username) # List of Weeks
-print("...")
+print('...')
 data = OrderedDict()
 init_data(items, charts, data)
 load_data(LastFmGet, username, mode, sort, charts, data)
-print("...")
-print("Done")
+print('...')
+print('Done')
 
 # Structure of data
 # data = {
@@ -52,7 +52,7 @@ fig, ax = pyplot.subplots(
 
 fig.tight_layout()
 
-ax.set_title(f"{username}'s Top {numItems} {str(mode)}s Timeline")
+ax.set_title(f'{username}'s Top {numItems} {str(mode)}s Timeline')
 ax.set_ylabel(sort)
 
 if sort == Sort.SCROBBLES:
@@ -106,11 +106,11 @@ for rank, (itemName, itemData) in enumerate(data.items(), 1):
         y         = itemData.values(),
         xdate     = True,
         color     = (0.75, 0, 0, alpha),
-        label     = "{:>2}. ".format(str(rank)) + itemName,
+        label     = '{:>2}. '.format(str(rank)) + itemName,
         linestyle = '-',
         marker    = '')
     alpha -= alphaInt
 
 
 pyplot.show()
-pyplot.gcf().savefig("timeline.png")
+pyplot.gcf().savefig('timeline.png')

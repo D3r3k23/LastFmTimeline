@@ -2,80 +2,7 @@
 from Week        import Week
 from collections import OrderedDict, namedtuple
 from math        import ceil
-from enum        import Enum
 
-class Mode(Enum):
-    ARTIST = 1
-    ALBUM  = 2
-    TRACK  = 3
-    def __str__(self):
-        if self is Mode.ARTIST:
-            return 'Artist'
-        if self is Mode.ALBUM:
-            return 'Album'
-        if self is Mode.TRACK:
-            return 'Track'
-
-class Sort(Enum):
-    SCROBBLES = 1
-    RANK      = 2
-    def __str__(self):
-        if self is Sort.SCROBBLES:
-            return 'Scrobbles'
-        if self is Mode.RANK:
-            return 'Rank'
-
-
-def get_username(LastFmGet):
-    while True:
-        username = input("Enter Last.fm username: ")
-        print()
-        if 'error' not in LastFmGet.user_info(username):
-            return username
-
-def get_mode():
-    print("[1] Artists")
-    print("[2] Albums")
-    print("[3] Tracks")
-    while True:
-        try:
-            answer = int(input("Enter which data to analyze (1-3): "))
-            print()
-        except ValueError:
-            continue
-
-        if answer == 1:
-            return Mode.ARTIST
-        if answer == 2:
-            return Mode.ALBUM
-        if answer == 3:
-            return Mode.TRACK
-
-def get_sort():
-    print("[1] Scrobbles")
-    print("[2] Rank")
-    while True:
-        try:
-            answer = int(input("Enter which method to sort data (1-2): "))
-            print()
-        except ValueError:
-            continue
-
-        if answer == 1:
-            return Sort.SCROBBLES
-        if answer == 2:
-            return Sort.RANK
-
-def get_num_items(mode):
-    while True:
-        try:
-            numItems = int(input("Enter the number of " + str(mode) + "s to include (0-100): "))
-            print()
-        except ValueError:
-            continue
-
-        if 1 <= numItems <= 100:
-            return numItems
 
 # Returns a list of items from the user's profile
 def get_items(LastFmGet, username, mode, numItems):
@@ -188,6 +115,6 @@ def round_up(x, place):
 
 def print_data(data):
     for itemName, itemData in data.items():
-        print(itemName + ":")
+        print(itemName + ':')
         for week, entry in itemData.items():
-            print("\t" + str(week) + ": " + str(entry))
+            print('\t' + str(week) + ': ' + str(entry))
