@@ -8,15 +8,16 @@ if USE_CACHE:
     import requests_cache
     requests_cache.install_cache()
 
-import ApiSecrets
-#
-# Inside ApiSecrets.py: Define KEY string
-#
-API_KEY = ApiSecrets.KEY
-
 API_URL   = 'http://ws.audioscrobbler.com/2.0/'
 CALL_RATE = 5 # calls per second
 CALL_INT  = 1 / CALL_RATE # interval
+
+import ApiConfig
+#
+# Inside ApiConfig.py: Define KEY string
+#
+API_KEY = ApiConfig.KEY
+
 
 # Interface class for requesting data from the last.fm API
 class LastFmApi:

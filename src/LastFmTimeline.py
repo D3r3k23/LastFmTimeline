@@ -1,7 +1,8 @@
 
 from LastFmApi import LastFmApi
+from TimelineData import TimelineData
 from Week import Week
-from Util import *
+import Util
 
 from collections import OrderedDict
 from matplotlib  import pyplot, dates
@@ -14,6 +15,9 @@ username = get_username(LastFmGet)
 mode     = get_mode()
 sort     = get_sort()
 numItems = get_num_items(mode)
+
+
+data = TimeLineData
 
 
 # Build the dataset
@@ -52,7 +56,7 @@ fig, ax = pyplot.subplots(
 
 fig.tight_layout()
 
-ax.set_title(f'{username}'s Top {numItems} {str(mode)}s Timeline')
+ax.set_title(f'{username}\'s Top {numItems} {str(mode)}s Timeline')
 ax.set_ylabel(sort)
 
 if sort == Sort.SCROBBLES:

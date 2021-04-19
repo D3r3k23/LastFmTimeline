@@ -1,6 +1,7 @@
 
 from datetime import datetime
 
+
 # Stores start and end timestamps of a week
 class Week:
     def __init__(self, start, end):

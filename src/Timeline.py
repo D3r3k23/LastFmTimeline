@@ -1,8 +1,9 @@
-"""Creates a timeline from TimelineData"""
+"""Creates a timeline plot from TimelineData"""
 
-import LastFmApi
 from TimelineData import TimelineData
 
+from matplotlib import pyplot, dates
+
 class Timeline:
-    def __init__(self, data: TimelineData):
+    def __init__(self, data):
         self.data = data

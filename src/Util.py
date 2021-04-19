@@ -81,3 +81,41 @@ def get_num_items(mode):
 
         if 1 <= numItems <= 100:
             return numItems
+
+# Gets API method and keys for last.fm user top items API call
+def get_user_top_items_args(LastFmGet, mode):
+    if mode is Mode.ARTIST:
+        dataMethod = LastFmGet.user_top_artists
+        key1 = 'topartists'
+        key2 = 'artist'
+    elif mode is Mode.ALBUM:
+        dataMethod = LastFmGet.user_top_albums
+        key1 = 'topalbums'
+        key2 = 'album'
+    elif mode is Mode.TRACK:
+        dataMethod = LastFmGet.user_top_tracks
+        key1 = 'toptracks'
+        key2 = 'track'
+    else:
+        return None
+
+    return dataMethod, key1, key2
+
+# Gets API method and keys for last.fm user weekly items chart API call 
+def get_user_weekly_items_chart_args(LastFmGet, mode):
+    if mode is Mode.ARTIST:
+        dataMethod = LastFmGet.user_weekly_artists_chart
+        key1 = 'weeklyartistchart'
+        key2 = 'artist'
+    elif mode is Mode.ALBUM:
+        dataMethod = LastFmGet.user_weekly_albums_chart
+        key1 = 'weeklyalbumchart'
+        key2 = 'album'
+    elif mode is Mode.TRACK:
+        dataMethod = LastFmGet.user_weekly_tracks_chart
+        key1 = 'weeklytrackchart'
+        key2 = 'track'
+    else:
+        return None
+
+    return dataMethod, key1, key2
