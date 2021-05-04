@@ -5,4 +5,4 @@
 
 **/__pycache__/
 
-/src/ApiSecrets.py
+/src/ApiConfig.py
