@@ -1,14 +1,11 @@
+import lastfmget
+lastfmget.init('api_cfg.yaml')
+
+from Util import *
+from TimelineData import TimelineData
+from LastFmTimeline import LastFmTimeline
+
 import argparse
-import enum
-
-class Mode(enum.Enum):
-    Artists = enum.auto()
-    Albums  = enum.auto()
-    Tracks  = enum.auto()
-
-class Sort(enum.Enum):
-    Scrobbles = enum.auto()
-    Rank      = enum.auto()
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,7 +15,11 @@ def main():
     parser.add_argument('items', type=int,  help='Number of items to display')
     args = parser.parse_args()
 
+    data = TimelineData(args.user, args.mode, args.sort, args.items)
 
+    timeline = LastFmTimeline(data)
+    timeline.create()
+    timeline.save('timeline.png')
 
 if __name__ == '__main__':
     main()

@@ -1,23 +1,11 @@
-
-import lastfmget
-from TimelineData import TimelineData
+from Util import *
 from Week import Week
-import Util
 
-from collections import OrderedDict
-from matplotlib  import pyplot, dates
+from matplotlib  import pyplot, dates # Or another one
 
-lastfmget.init('api_cfg.yaml')
-
-
-# Get data configuration
-username = get_username(LastFmGet)
-mode     = get_mode()
-sort     = get_sort()
-numItems = get_num_items(mode)
-
-
-data = TimeLineData
+class LastFmTimeline:
+    def __init__(self, data):
+        self.data = data
 
 
 # Build the dataset
