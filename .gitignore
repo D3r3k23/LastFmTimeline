@@ -1,8 +1,7 @@
 
 /.vscode/
-/.VSCodeCounter/
 /venv/
 
 **/__pycache__/
 
-/src/ApiConfig.py
+/api_config.yaml

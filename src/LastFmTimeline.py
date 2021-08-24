@@ -1,5 +1,5 @@
 
-from LastFmApi import LastFmApi
+import lastfmget
 from TimelineData import TimelineData
 from Week import Week
 import Util
@@ -7,7 +7,7 @@ import Util
 from collections import OrderedDict
 from matplotlib  import pyplot, dates
 
-LastFmGet = LastFmApi('LastFmTimeline by D3r3k523')
+lastfmget.init('api_cfg.yaml')
 
 
 # Get data configuration
