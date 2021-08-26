@@ -1,7 +1,6 @@
 
 from Week        import Week
 from collections import OrderedDict, namedtuple
-from math        import ceil
 
 
 
@@ -43,11 +42,3 @@ def create_rank_data(charts, data):
     return data
 
 
-def round_up(x, place):
-    return int(ceil(x / place)) * place
-
-def print_data(data):
-    for itemName, itemData in data.items():
-        print(itemName + ':')
-        for week, entry in itemData.items():
-            print('\t' + str(week) + ': ' + str(entry))

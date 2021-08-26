@@ -1,4 +1,5 @@
 
+
 charts = []
 for chart in r['weeklychartlist']['chart']:
     start = int(chart['from'])

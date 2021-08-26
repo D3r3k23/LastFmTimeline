@@ -7,15 +7,17 @@ from LastFmTimeline import LastFmTimeline
 
 import argparse
 
+MAX_ITEMS = 100
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('user',  type=str,  help='Username')
-    parser.add_argument('mode',  type=Mode, help='artists, albums, tracks')
-    parser.add_argument('sort',  type=Sort, help='scrobbles, rank')
-    parser.add_argument('items', type=int,  help='Number of items to display')
+    parser.add_argument('user', help='Username')
+    parser.add_argument('mode', type=Mode.from_str, choices=[ str(mode) for mode in list(Mode) ])
+    parser.add_argument('sort', type=Sort.from_str, choices=[ str(sort) for sort in list(Sort) ])
+    parser.add_argument('numitems', type=int, choices=range(1, MAX_ITEMS+1))
     args = parser.parse_args()
 
-    data = TimelineData(args.user, args.mode, args.sort, args.items)
+    data = TimelineData(args.user, args.mode, args.sort, args.numitems)
 
     timeline = LastFmTimeline(data)
     timeline.create()

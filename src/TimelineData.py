@@ -1,24 +1,25 @@
-"""Collects and organizes the data used by the timeline"""
-
 import lastfmget
 
 from Util import *
 from Week import Week
 
-from collections import OrderedDict
 from pprint import pprint
 
 class TimelineData:
-    def __init__(self, user, mode, sort, items):
-        self.data = OrderedDict()
-
+    def __init__(self, user, mode, sort, numitems):
         self.user = user
         self.mode = mode
         self.sort = sort
-        # self.items = items
+        self.numitems = numitems
 
-        self.items  = self.get_items()
-        self.charts = self.get_target_charts()
+        self.data = self.load_data()
+
+    def load_data(self):
+        items  = get_items(self.user, self.mode, self.numitems)
+        charts = self.get_target_charts()
+
+
+        return {}
 
     # Initializes the data dict with item names as keys and dicts as values, with charts as keys and scrobbles as values
     def init_data(self):
@@ -49,30 +50,27 @@ class TimelineData:
 
     
 # Returns a list of items from the user's profile
-def get_items(self, username):
-    datamethod, key1, key2 = get_user_top_items_args(self.mode)
-
-    itemData = datamethod(self.user, self.numItems)
-    items = [ item['name'] for item in itemData[key1][key2] ]
-    return items
-
-def get_user_top_items_args(mode):
+def get_items(username, mode, numitems):
     if mode is Mode.Artists:
-        method = lastfmget.user_top_artists
-        key1 = 'topartists'
-        key2 = 'artist'
-    elif mode is Mode.Albums:
-        method = lastfmget.user_top_albums
-        key1 = 'topalbums'
-        key2 = 'album'
-    elif mode is Mode.Tracks:
-        method = lastfmget.user_top_tracks
-        key1 = 'toptracks'
-        key2 = 'track'
-    else:
-        return None
+        artists = lastfmget.user_top_artists(username, numitems)
+        return [ artist['name'] for artist in artists ]
 
-    return method, key1, key2
+    if mode is Mode.Albums:
+        albums = lastfmget.user_top_albums(username, numitems)
+        return [ album['artist'] + ' - ' + album['name'] for album in albums ]
+
+    if mode is Mode.Tracks:
+        tracks = lastfmget.user_top_tracks(username, numitems)
+        return [ track['artist'] + ' - ' + track['name'] for track in tracks ]
+
+def get_user_top_items(mode, user, *params): # params: limit, page
+    method = getattr(lastfmget, 'user_top_' + str(mode)) # Ex. Mode.Artists -> lastfmget.user_top_artists
+    topitems = method(user, *params)
+
+def get_user_top_items_keys(mode):
+    key1 = 'top' + str(mode)     # Ex: Mode.Artists -> 'topartists'
+    key2 = str(mode).rstrip('s') # Ex: Mode.Artists -> 'artist'
+    return key1, key2
 
 def get_user_weekly_items_chart_args(mode):
     if mode is Mode.Artists:
