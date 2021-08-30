@@ -1,1 +1,3 @@
-venv\Scripts\python src\main.py %*
+@echo off
+
+venv\Scripts\python lastfmtimeline %*

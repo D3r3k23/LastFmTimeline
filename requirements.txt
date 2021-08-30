@@ -1,3 +1,4 @@
 lastfmget
-matplotlib
+plotly
+pandas
 pyyaml
