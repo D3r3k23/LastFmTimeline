@@ -1,7 +1,6 @@
 import argparse
 
 import lastfmget
-lastfmget.init('api_cfg.yaml')
 
 from Util import *
 from TimelineData import TimelineData
@@ -19,6 +18,8 @@ def main():
     parser.add_argument('--timeline_fn', '-s', default=None, help='.png')
     args = parser.parse_args()
 
+    lastfmget.init('api_cfg.yaml')
+
     print('Creating timeline:')
     print(f'  username:  {args.user}')
     print(f'  item type: {args.item_type}')
@@ -28,7 +29,7 @@ def main():
 
     # if args.display:
     #     timeline.display()
-    
+
     # if args.timeline_fn:
     #     timeline.save(f'data/{args.timeline_fn})
     #     print(f'Timeline saved to: {args.timeline_fn}')
@@ -46,7 +47,7 @@ def create_timeline(username, itemtype, mode, numitems):
         data.print('data/timeline_rankdata.yaml')
 
     print('Creating timeline')
-    timeline = LastFmTimeline(data.get(), itemtype, mode, numitems)
+    timeline = LastFmTimeline(data.get(), username, itemtype, mode, numitems)
     timeline.create()
 
     # return timeline

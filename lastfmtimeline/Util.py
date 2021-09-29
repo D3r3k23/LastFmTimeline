@@ -1,8 +1,8 @@
 import enum
 import math
+import pickle
 from dataclasses import dataclass
 from datetime import datetime
-import pickle
 
 import yaml
 
@@ -30,7 +30,7 @@ class Mode(MyEnum):
 class Chart:
     start: int
     end: int
-    
+
     def date(self):
         return datetime.fromtimestamp(self.start)
 
