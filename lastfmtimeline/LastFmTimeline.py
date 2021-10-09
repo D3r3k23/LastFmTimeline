@@ -1,25 +1,24 @@
 import plotly.express as px
+import pandas as pd
 
 from Util import *
-from TimelineData import TimelineData
 
 class LastFmTimeline:
-    def __init__(self, data, username, itemtype, mode, numitems):
-        self.data     = data
+    def __init__(self, data, username, itemtype, mode):
+        self.df       = pd.DataFrame(data)
         self.username = username
         self.itemtype = itemtype
         self.mode     = mode
-        self.numitems = numitems
 
         self.fig = None
-    
+
     def create(self):
-        yaxis = [ dict(item.items()) for itemname, item in self.data.items() ]
+        # yaxis = [ dict(item.items()) for itemname, item in self.data.items() ]
 
         fig = px.line(
-            data_frame = self.data,
-            x = 'date'
-            # y = 
+            data_frame = self.df
+            # x = 'date'
+            # y =
         )
         fig.show()
 

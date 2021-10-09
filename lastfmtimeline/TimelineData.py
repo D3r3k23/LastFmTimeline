@@ -1,33 +1,33 @@
 """
 TimelineData.data:
-  {
-    item1: {
-      chart1: playcount
-      chart2: playcount
-      ...
-    }
-    item2: {
-      chart1: playcount
-      chart2: playcount
-      ...
-    }
+{
+  item1: {
+    chart1: playcount
+    chart2: playcount
     ...
   }
+  item2: {
+    chart1: playcount
+    chart2: playcount
+    ...
+  }
+...
+}
 
 TimelineData.ranking:
-  {
-    item1: {
-      chart1: rank
-      chart2: rank
-      ...
-    }
-    item2: {
-      chart1: rank
-      chart2: rank
-      ...
-    }
+{
+  item1: {
+    chart1: rank
+    chart2: rank
     ...
   }
+  item2: {
+    chart1: rank
+    chart2: rank
+    ...
+  }
+...
+}
 """
 from collections import namedtuple
 
@@ -46,24 +46,24 @@ class TimelineData:
 
         self.items  = get_items(self.username, self.itemtype, self.numitems)
         self.charts = get_target_charts(self.username)
-
-        self.data = {}
         self.init_data()
 
     def init_data(self):
         """
         Initialize self.data to 0
         """
+        self.data = {}
         for item in self.items:
             self.data[item] = { chart: 0 for chart in self.charts }
 
-    def load(self):
+    def load(self, mode):
         """
         For each of the user's top $numitems items ($itemtype), store cumulative scrobbles
         for each chart since the user's first scrobble.
         """
+        print('' * 40)
         prevchart = None
-        for chart in self.charts:
+        for i, chart in enumerate(self.charts):
             if prevchart is not None:
                 # Copy each item's playount from the previous chart
                 for item in self.data.values():
@@ -78,6 +78,14 @@ class TimelineData:
 
             prevchart = chart
 
+            if i % (len(self.charts) / 40) == 0:
+                print(',', end='')
+        print()
+        print('' * 40)
+
+        if (mode is Mode.Rank):
+            self.convert_to_rank()
+
     def convert_to_rank(self):
         RankItem = namedtuple('RankItem', ['name', 'playcount'])
 
@@ -90,14 +98,14 @@ class TimelineData:
 
             for rank, item in enumerate(ranking, 1):
                 rankdata[item.name][chart] = rank
-        
+
         self.data = rankdata
-    
+
     def get(self):
         return self.data
-    
+
     def dump(self, fn):
-        dump_pickle(self.data, fn)
+        dump_pickle(fn, self.data)
 
     def print(self, fn):
         dump_yaml(self.data, fn)
@@ -122,7 +130,7 @@ def get_user_top_items(itemtype, username, *params):    # params: limit, page
     method = getattr(lastfmget, f'user_top_{itemtype}') # Ex. Item.Artists -> lastfmget.user_top_artists
     topitems = method(username, *params)
     return topitems
-    
+
 def get_target_charts(username):
     """
     Returns list of charts available in the user's history

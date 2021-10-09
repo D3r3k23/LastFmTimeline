@@ -46,9 +46,13 @@ def dump_yaml(data, fn):
     with open(fn, 'w') as f:
         yaml.dump(data, f, sort_keys=False)
 
-def dump_pickle(data, fn):
+def dump_pickle(fn, data):
     with open(fn, 'wb') as f:
         pickle.dump(data, f)
+
+def load_pickle(fn):
+    with open(fn, 'rb') as f:
+        return pickle.load(f)
 
 def round_up(x, place):
     return int(math.ceil(x / place)) * place
