@@ -66,10 +66,7 @@ def create_timeline(data, username, itemtype, mode):
     print('Creating timeline')
     timeline = LastFmTimeline(data, username, itemtype, mode)
     timeline.create()
-
-    # return timeline
-
-    return None
+    return timeline
 
 if __name__ == '__main__':
     main()

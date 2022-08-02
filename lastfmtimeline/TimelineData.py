@@ -61,7 +61,7 @@ class TimelineData:
         For each of the user's top $numitems items ($itemtype), store cumulative scrobbles
         for each chart since the user's first scrobble.
         """
-        print('' * 40)
+        print('-' * 40)
         prevchart = None
         for i, chart in enumerate(self.charts):
             if prevchart is not None:
@@ -78,10 +78,10 @@ class TimelineData:
 
             prevchart = chart
 
-            if i % (len(self.charts) / 40) == 0:
-                print(',', end='')
+            if i % (len(self.charts) // 40) == 0:
+                print('.', end='')
         print()
-        print('' * 40)
+        print('-' * 40)
 
         if (mode is Mode.Rank):
             self.convert_to_rank()

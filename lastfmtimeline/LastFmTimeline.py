@@ -5,7 +5,7 @@ from Util import *
 
 class LastFmTimeline:
     def __init__(self, data, username, itemtype, mode):
-        self.df       = pd.DataFrame(data)
+        self.data     = data
         self.username = username
         self.itemtype = itemtype
         self.mode     = mode
@@ -13,17 +13,41 @@ class LastFmTimeline:
         self.fig = None
 
     def create(self):
-        # yaxis = [ dict(item.items()) for itemname, item in self.data.items() ]
+        # Chart dates
+        # xaxis = [ chart for chart in next(iter(self.data.values())).keys() ]
 
-        fig = px.line(
-            data_frame = self.df
-            # x = 'date'
-            # y =
+        # Item names
+        # yaxis = [ item for item in self.data.keys() ]
+
+        modestr = str(self.mode)
+        df = pd.DataFrame(columns=[ 'item', modestr, 'chart' ])
+
+        for item, charts in self.data.items():
+            df.append(pd.DataFrame({
+                'item'  : item,
+                modestr : list(charts.values()),
+                'chart' : list(charts.keys())
+            }))
+
+        df = pd.DataFrame({
+            'item'  : [ item for item in self.data.keys() ],
+            modestr : list(val   for val   in charts.values() for charts in self.data.values()),
+            'chart' : list(chart for chart in charts.keys()   for charts in self.data.values())
+        })
+
+        self.fig = px.line(
+            title      = 'LastFmTimeline',
+            data_frame = df
+            # line_group = items
+            # x          = 'charts',
+            # y          = modestr
         )
-        fig.show()
 
+    def display(self):
+        self.fig.show()
 
-        self.fig = fig
+    def save(self, fn):
+        ...
 
 # # Create figure
 # fig, ax = pyplot.subplots(
